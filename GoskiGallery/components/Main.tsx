@@ -1,25 +1,22 @@
-import { View, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, StyleSheet } from 'react-native';
+import React from 'react';
 import Typography from './StyleText';
 import StyleButton from './StyleButton';
-import { Link } from 'expo-router';
+
 
 export default function Main() {
-
-
   return (
     <View style={styles.container}>
-      <Typography>Goski Gallery.</Typography>
+      <Typography>Goski Gallery, um espaço para divulgar e exibir suas obras.</Typography>
+      <StyleButton>Ver mais</StyleButton>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 24,
-      fontWeight: 'bold'
-    },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 10,
+  },
 });

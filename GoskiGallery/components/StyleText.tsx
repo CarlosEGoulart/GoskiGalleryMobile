@@ -9,6 +9,8 @@ type StyleTextProps = {
 export default function StyleText({ children }: StyleTextProps) {
   const style: StyleProp<TextStyle> = {
     color: "white",
+    fontWeight: "bold",
+    padding: 5,
   };
    
   
