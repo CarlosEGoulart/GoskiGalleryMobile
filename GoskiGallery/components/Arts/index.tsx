@@ -1,72 +1,106 @@
-import { StyleSheet, View, Image, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native';
 import React from 'react';
-import Typography from '../StyleText';
-import StyleText from '../StyleText';
+import { Link } from 'expo-router';
+import ActionIcons from './ActionIcons';
 
-const ARTS = [
-  { id: '1', image: require('../../assets/images/catalog/Serj.jpg') },
-  { id: '2', image: require('../../assets/images/catalog/Patrick.jpg') },
+const artsData = [
+  {
+    id: '1',
+    title: 'Patrick Bateman',
+    artist: 'carlllos.png',
+    artistId: '1',
+    artistImage: require('@/assets/images/profilePhotos/carlos.jpg'),
+    artImage: require('@/assets/images/catalog/Patrick.jpg'),
+    description: 'Desenho do Patrick Bateman que Carlos roubou de Julia só pra ter 2 perfis no app',
+  },
+  {
+    id: '2',
+    title: 'Serj Tankian',
+    artist: 'jxliaazy',
+    artistId: '2',
+    artistImage: require('@/assets/images/profilePhotos/julia.png'),
+    artImage: require('@/assets/images/catalog/Serj.jpg'),
+    description: 'Desenho do Serj Tankian que a Julia fez de fato',
+  },
 ];
 
-const ARTIST = [
-  { id: '1', name: 'Jxliaazy' },
-  { id: '2', name: 'carlllos.png' },
-]
-
-const ArtItem = ({ image }) => (
-  <View style={styles.artItem}>
-    <Image
-      source={image} 
-      style={styles.artImage}
-    />
-
-    <StyleText></StyleText>
-
-  </View>
-);
-
-const ArtSection = ({ title, data }) => (
-  <View style={styles.sectionContainer}>
-    <Typography style={styles.sectionTitle}>{title}</Typography>
-    <FlatList
-      data={data}
-      renderItem={({ item }) => <ArtItem image={item.image} />}
-      keyExtractor={item => item.id}
-    />
-  </View>
-);
-
 export default function Arts() {
-  return (
-      <View style={styles.container}>
-        <ArtSection title="Arts" data={ARTS} />
+  const renderArtItem = ({ item }) => (
+    <View style={styles.artItem}>
+      <Link href={{ pathname: "/artists", params: { id: item.artistId } }} asChild>
+        <TouchableOpacity style={styles.artistHeader}>
+          <Image source={item.artistImage} style={styles.artistImage} />
+          <Text style={styles.artistName}>{item.artist}</Text>
+        </TouchableOpacity>
+      </Link>
+      
+      <Link href={{ pathname: "/artsCatalog", params: { id: item.id } }} asChild>
+        <TouchableOpacity>
+          <Image source={item.artImage} style={styles.artImage} />
+        </TouchableOpacity>
+      </Link>
+
+      <View style={styles.artInfo}>
+        <View style={styles.artActions}>
+          <Text style={styles.artTitle}>{item.title}</Text>
+          <ActionIcons />
+        </View>
+        <Text style={styles.artInfo}>{item.description}</Text>
       </View>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={artsData}
+        renderItem={renderArtItem}
+        keyExtractor={item => item.id}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
-    gap: 16,
-  },
-  sectionContainer: {
-    width: '100%',
-    gap: 10,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 10,
   },
   artItem: {
-    padding: 10,
+    marginVertical: 15,
+  },
+  artistHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+  },
+  artistImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  artistName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
   },
   artImage: {
-    width: 350,
-    height: 250,
-    backgroundColor: '#ccc', 
-    borderRadius: 8,
+    width: '100%',
+    height: 400,
   },
+  artInfo: {
+    padding: 10,
+    color: 'white',
+  },
+  artTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  artActions:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }
 });

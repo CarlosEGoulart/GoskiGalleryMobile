@@ -1,18 +1,19 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Arts from "@/components/Arts";
-import ScreenWrapper from "@/components/ScreenWrapper";
-import React from "react";
+import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import ArtDetails from '@/components/Arts/Art';
+import Arts from '@/components/Arts/index';
+import ScreenWrapper from '@/components/ScreenWrapper';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
+export default function ArtistsPage() {
+  const { id } = useLocalSearchParams();
 
-export default function CatalogScreen() {
-  return(
+  return (
     <ScreenWrapper>
       <Header />
-      
-      <Arts />
-
+      {id ? <ArtDetails /> : <Arts />}
       <Footer />
     </ScreenWrapper>
-  )
+  );
 }

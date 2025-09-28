@@ -1,5 +1,4 @@
 import {
-    View,
     Text,
     TouchableOpacityProps,
     TouchableOpacity,
@@ -7,7 +6,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 type IconButtonProps = {
     icon: React.ReactNode;

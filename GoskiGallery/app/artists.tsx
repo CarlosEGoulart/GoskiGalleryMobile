@@ -1,18 +1,19 @@
-import React from 'react'
-import Artists from '@/components/Artists/Artists'
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import ArtistProfile from '@/components/Artists/Artists';
+import Artists from '@/components/Artists/index';
 import ScreenWrapper from '@/components/ScreenWrapper';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
-export default function artists() {
-    return(
-      <ScreenWrapper>
-        <Header />
-        
-        <Artists />
-  
-        <Footer />
-      </ScreenWrapper>
-    )
+export default function ArtistsPage() {
+  const { id } = useLocalSearchParams();
+
+  return (
+    <ScreenWrapper>
+      <Header />
+      {id ? <ArtistProfile /> : <Artists />}
+      <Footer />
+    </ScreenWrapper>
+  );
 }
-
