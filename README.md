@@ -1,1 +1,2 @@
-# GoskiGalleryMobile
+# GoskiGallery
+
