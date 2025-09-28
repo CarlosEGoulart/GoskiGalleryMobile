@@ -11,9 +11,9 @@ export default function StyleText({ children }: StyleTextProps) {
     color: "white",
     fontWeight: "bold",
     padding: 5,
+    fontSize: 20,
   };
    
-  
     return (
     <View>
       <Text style={style}>{children}</Text>

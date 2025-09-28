@@ -6,7 +6,7 @@ const theme = {
       lg: 32,
       xl: 40,
     },
-    backgroundColor: "#000",
+    backgroundColor: "#161616",
   };
   
   export default theme;

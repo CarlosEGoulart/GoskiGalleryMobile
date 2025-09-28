@@ -1,18 +1,18 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import Main from "@/components/Main";
+import Arts from "@/components/Arts";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import React from "react";
 
-export default function _screen() {
-  return (
+
+export default function CatalogScreen() {
+  return(
     <ScreenWrapper>
       <Header />
       
-      <Main />
+      <Arts />
 
       <Footer />
     </ScreenWrapper>
-  );
+  )
 }
-
