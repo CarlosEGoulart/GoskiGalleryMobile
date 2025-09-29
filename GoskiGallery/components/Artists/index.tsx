@@ -2,6 +2,7 @@ import { StyleSheet, View, FlatList, Image, TouchableOpacity } from 'react-nativ
 import React from 'react';
 import StyleText from '../StyleText';
 import { Link } from 'expo-router';
+import StyleButton from '../StyleButton';
 
 const artistsData = [
   {
@@ -20,8 +21,11 @@ export default function Artists() {
   const renderArtistItem = ({ item }) => (
     <Link href={{ pathname: "/artists", params: { id: item.id } }} asChild>
       <TouchableOpacity style={styles.artistItem}>
-        <Image source={item.image} style={styles.artistImage} />
-        <StyleText style={styles.artistName}>{item.name}</StyleText>
+        <View style={styles.artistInfo}>
+          <Image source={item.image} style={styles.artistImage} />
+          <StyleText style={styles.artistName}>{item.name}</StyleText>
+        </View>
+        <StyleButton>Seguir</StyleButton>
       </TouchableOpacity>
     </Link>
   );
@@ -45,9 +49,14 @@ const styles = StyleSheet.create({
   artistItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+  },
+  artistInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   artistImage: {
     width: 50,
@@ -57,5 +66,6 @@ const styles = StyleSheet.create({
   },
   artistName: {
     fontSize: 18,
+    fontWeight: 'bold',
   },
 });

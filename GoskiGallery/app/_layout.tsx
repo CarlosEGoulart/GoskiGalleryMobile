@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import React from "react";
+import "@expo/react-native-action-sheet"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 export default function RootLayout() {
