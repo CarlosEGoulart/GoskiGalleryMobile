@@ -54,6 +54,7 @@ export default function Art() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
   artImage: {
     width: '100%',

@@ -2,6 +2,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
+import React from "react";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -27,10 +29,12 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <ActionSheetProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </ActionSheetProvider>
   );
 }
