@@ -3,7 +3,6 @@ import React from 'react';
 import StyleText from '../StyleText';
 import { useLocalSearchParams } from 'expo-router';
 
-// Mock data, in a real app this would come from an API based on the id
 const artistsData = {
   '1': {
     name: 'carlllos.png',

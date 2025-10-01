@@ -3,12 +3,16 @@ import React from 'react'
 import theme from '@/constants/theme'
 import Logo from './Logo';
 import MenuIcon from './MenuIcon';
+import SearchIcon from './SearchIcon';
 
 export default function index() {
   return (
     <View style={styles.container}>
         <Logo />
-        <MenuIcon />
+        <View style={styles.icons}>
+          <SearchIcon />
+          <MenuIcon />
+        </View>
     </View>
   )
 }
@@ -21,4 +25,7 @@ const styles = StyleSheet.create({
       justifyContent: "space-between",
       paddingHorizontal: theme.dimension.xs,
     },
+    icons:{
+      flexDirection: 'row',
+    }
 });
