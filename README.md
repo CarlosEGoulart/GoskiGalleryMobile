@@ -55,7 +55,7 @@ Certifique-se de ter o Node.js e o Yarn instalados em sua máquina, além do amb
 
 1. Clone o repositório:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
+   git clone https://github.com/CarlosEGoulart/GoskiGalleryMobile.git
    ```
 2. Navegue até o diretório do projeto:
    ```bash
