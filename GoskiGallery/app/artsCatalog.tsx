@@ -1,4 +1,5 @@
-import React from 'react';
+// GoskiGallery/app/artsCatalog.tsx
+import React, { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import ArtDetails from '@/components/Arts/Art';
 import Arts from '@/components/Arts/index';
@@ -8,11 +9,12 @@ import Footer from '@/components/Footer';
 
 export default function ArtistsPage() {
   const { id } = useLocalSearchParams();
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <ScreenWrapper>
-      <Header />
-      {id ? <ArtDetails /> : <Arts />}
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      {id ? <ArtDetails /> : <Arts searchQuery={searchQuery} />}
       <Footer />
     </ScreenWrapper>
   );

@@ -1,10 +1,13 @@
 import { View, StyleSheet, Text } from 'react-native';
 import React from 'react';
+import { Link } from 'expo-router';
 
 export default function Logo() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>GoskiGallery</Text>
+      <Link href={'/'}>
+        <Text style={styles.text}>GoskiGallery</Text>
+      </Link>
     </View>
   );
 }

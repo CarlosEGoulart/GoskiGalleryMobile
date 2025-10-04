@@ -1,5 +1,5 @@
 import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import ActionIcons from './ActionIcons';
 
@@ -24,7 +24,27 @@ const artsData = [
   },
 ];
 
-export default function Arts() {
+export default function Arts({ searchQuery }) {
+
+  const [filteredArts, setFilteredArts] = useState(artsData);
+
+
+  useEffect(() => {
+
+    console.log(`Pesquisando por: "${searchQuery}"`);
+
+    if (searchQuery) {
+      const newFilteredArts = artsData.filter(art =>
+        art.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredArts(newFilteredArts);
+    } else {
+
+      setFilteredArts(artsData);
+    }
+
+  }, [searchQuery]);
+
   const renderArtItem = ({ item }) => (
     <View style={styles.artItem}>
       <Link href={{ pathname: "/artists", params: { id: item.artistId } }} asChild>
@@ -45,15 +65,16 @@ export default function Arts() {
           <Text style={styles.artTitle}>{item.title}</Text>
           <ActionIcons />
         </View>
-        <Text style={styles.artInfo}>{item.description}</Text>
+        <Text style={styles.artDescription}>{item.description}</Text>
       </View>
     </View>
   );
 
+
   return (
-    <View style={styles.container}>
+    <View>
       <FlatList
-        data={artsData}
+        data={filteredArts}
         renderItem={renderArtItem}
         keyExtractor={item => item.id}
       />
@@ -62,9 +83,6 @@ export default function Arts() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   artItem: {
     marginVertical: 15,
   },
@@ -91,12 +109,15 @@ const styles = StyleSheet.create({
   },
   artInfo: {
     padding: 10,
-    color: 'white',
   },
   artTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
+  },
+  artDescription: {
+    color: 'white',
+    marginTop: 5,
   },
   artActions:{
     flexDirection: 'row',
