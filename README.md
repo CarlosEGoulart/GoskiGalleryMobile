@@ -13,43 +13,9 @@ O projeto utiliza as seguintes tecnologias:
 - **TypeScript**: Linguagem de programação para um desenvolvimento mais robusto e seguro.
 - **Expo Router**: Para navegação e roteamento dentro do aplicativo.
 
-## Estrutura do Projeto
-
-A estrutura do projeto está organizada da seguinte forma:
-
-```
-GoskiGallery/
-├── app/                  # Arquivos de rota e telas da aplicação
-│   ├── _layout.tsx
-│   ├── artists.tsx
-│   ├── artsCatalog.tsx
-│   └── index.tsx
-├── assets/               # Recursos estáticos como fontes e imagens
-│   ├── fonts/
-│   └── images/
-├── components/           # Componentes reutilizáveis da interface
-│   ├── Artists/
-│   ├── Arts/
-│   ├── Footer/
-│   ├── Header/
-│   ├── Main.tsx
-│   ├── ScreenWrapper.tsx
-│   ├── StyleButton.tsx
-│   └── StyleText.tsx
-├── constants/            # Constantes e configurações do tema
-│   └── theme.ts
-├── app.json              # Configurações do aplicativo Expo
-├── package.json          # Dependências e scripts do projeto
-└── tsconfig.json         # Configurações do TypeScript
-```
-
 ## Como Configurar e Rodar o Projeto
 
 Para configurar e rodar este projeto em seu ambiente local, siga os passos abaixo:
-
-### Pré-requisitos
-
-Certifique-se de ter o Node.js e o Yarn instalados em sua máquina, além do ambiente de desenvolvimento Expo configurado.
 
 ### Instalação
 
@@ -61,7 +27,11 @@ Certifique-se de ter o Node.js e o Yarn instalados em sua máquina, além do amb
    ```bash
    cd GoskiGallery
    ```
-3. Instale as dependências:
+3. Instale LTS
+   ```bash
+   nvm install --lts
+   ```
+4. Instale as dependências:
    ```bash
    yarn install
    ```
@@ -74,7 +44,7 @@ Para iniciar o servidor de desenvolvimento do Expo:
 yarn start
 ```
 
-Após iniciar o servidor, você pode abrir o aplicativo em um emulador/simulador (Android/iOS) ou em seu dispositivo físico usando o aplicativo Expo Go.
+Após iniciar o servidor, você pode abrir o aplicativo usando o aplicativo Expo Go.
 
 - Para rodar na web:
   ```bash
