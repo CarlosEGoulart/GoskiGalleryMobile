@@ -72,7 +72,7 @@ export default function Arts({ searchQuery }) {
 
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <FlatList
         data={filteredArts}
         renderItem={renderArtItem}
