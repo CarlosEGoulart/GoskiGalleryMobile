@@ -1,4 +1,4 @@
-# GoskiGallery
+<img width="257" height="562" alt="image" src="https://github.com/user-attachments/assets/8aab54d3-2182-498f-a6f9-772a3545d37f" /># GoskiGallery
 
 Este repositório contém o código-fonte do GoskiGallery, uma aplicação de galeria de arte.
 O projeto é construído com React Native e Expo, focando em uma experiência de usuário rica e performática para visualização de obras de arte e informações sobre artistas.
@@ -50,3 +50,21 @@ Após iniciar o servidor, você pode abrir o aplicativo usando o aplicativo Expo
   ```bash
   yarn web
   ```
+
+  ## Telas do sistema
+
+  ### Home Page
+  <img width="257" height="562" alt="image" src="https://github.com/user-attachments/assets/8f1f07d0-a8d9-4028-a76a-9f383a02e11b" />
+
+  ### Catalogo de artes
+  <img width="257" height="562" alt="image" src="https://github.com/user-attachments/assets/973b00e2-6e58-4135-82da-1fc82ccb1b0b" />
+
+
+  Detalhes da arte
+  <img width="257" height="562" alt="image" src="https://github.com/user-attachments/assets/08d2fdda-6a82-44ec-be73-47ede9af50b7" />
+
+  ### Lista de artistas
+  <img width="257" height="562" alt="image" src="https://github.com/user-attachments/assets/7c925389-8dd9-4507-a0f0-15c0ee4263eb" />
+
+  Detalhe do artista
+  <img width="257" height="562" alt="image" src="https://github.com/user-attachments/assets/d96ffd2f-155a-4d01-865a-3e44a8bedeaf" />
