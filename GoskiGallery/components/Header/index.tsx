@@ -38,9 +38,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
   );
 }
 
-// Adicione este estilo ao seu StyleSheet
 const styles = StyleSheet.create({
-  // ...seus estilos container e icons
   container: {
     flexDirection: 'row',
     alignItems: 'center',
