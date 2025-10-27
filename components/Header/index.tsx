@@ -38,9 +38,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
   );
 }
 
-// Adicione este estilo ao seu StyleSheet
 const styles = StyleSheet.create({
-  // ...seus estilos container e icons
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,10 +47,11 @@ const styles = StyleSheet.create({
   },
   icons: {
     flexDirection: 'row',
+    gap: 5,
   },
   searchInput: {
     height: 40,
-    borderColor: theme.colors.gray,
+    borderColor: theme.colors.dark,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: theme.dimension.xs,
