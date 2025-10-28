@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, Button } from 'react-native';
+import { StyleSheet, ScrollView, Button, View } from 'react-native';
 import React from 'react';
 import StyleButton from './StyleButton';
 import StyleText from './StyleText';
@@ -11,9 +11,14 @@ export default function Main() {
     <ScrollView contentContainerStyle={styles.container}>
       <StyleText>Goski Gallery</StyleText>
       <StyleText>Divulgue suas obras</StyleText>
-      <Link href="/artsCatalog" asChild>
-        <StyleButton>Visualizar Catalogo</StyleButton>
-      </Link>
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+        <Link href="/Auth/register" asChild>
+          <StyleButton>Registre-se</StyleButton>
+        </Link>
+        <Link href="/Auth/login" asChild>
+          <StyleButton>Login</StyleButton>
+        </Link>
+      </View>
     </ScrollView>
   );
 }

@@ -3319,7 +3319,7 @@ find-up@^5.0.0:
 
 firebase@^12.4.0:
   version "12.4.0"
-  resolved "https://registry.npmjs.org/firebase/-/firebase-12.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-12.4.0.tgz#c9de52c23e707d90aa43343ab3ad1c1ce6b71301"
   integrity sha512-/chNgDQ6ppPPGOQO4jctxOa/5JeQxuhaxA7Y90K0I+n/wPfoO8mRveedhVUdo7ExLcWUivnnow/ouSLYSI5Icw==
   dependencies:
     "@firebase/ai" "2.4.0"

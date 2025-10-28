@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   artistItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -57,6 +56,7 @@ const styles = StyleSheet.create({
   artistInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   artistImage: {
     width: 50,
