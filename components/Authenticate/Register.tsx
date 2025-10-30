@@ -8,28 +8,38 @@ import theme from '@/constants/theme';
 import { navigate } from 'expo-router/build/global-state/routing';
 
 export function Register() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [bio, setBio] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const handleRegister = async () => {
     setError(null);
+
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      const userDocRef = doc(db, 'users', user.uid);
+      const artistDocRef = doc(db, 'artists', user.uid);
 
-      await setDoc(userDocRef, {
+      await setDoc(artistDocRef, {
         uid: user.uid,
+        name: name,
         email: user.email,
         createdAt: Timestamp.fromDate(new Date()),
+        bio: bio,
+        image: ''
       });
 
       navigate('/artsCatalog');
-    } 
-    
-    catch (err: any) {
+    } catch (err: any) {
       setError(err.message);
     }
   };
@@ -37,6 +47,14 @@ export function Register() {
   return (
     <View style={styles.container}>
       {error && <Text style={styles.errorText}>{error}</Text>}
+      <TextInput
+        style={styles.input}
+        placeholder="Nome"
+        onChangeText={setName}
+        value={name}
+        placeholderTextColor={theme.colors.light}
+        autoCapitalize="words"
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -47,10 +65,28 @@ export function Register() {
         keyboardType="email-address"
       />
       <TextInput
+        style={[styles.input, styles.bioInput]}
+        placeholder="Bio"
+        onChangeText={setBio}
+        value={bio}
+        placeholderTextColor={theme.colors.light}
+        autoCapitalize="sentences"
+        multiline={true}
+        numberOfLines={4}
+      />
+      <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="Senha"
         onChangeText={setPassword}
         value={password}
+        secureTextEntry
+        placeholderTextColor={theme.colors.light}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirmar Senha"
+        onChangeText={setConfirmPassword}
+        value={confirmPassword}
         secureTextEntry
         placeholderTextColor={theme.colors.light}
       />
@@ -75,6 +111,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     width: '100%',
+  },
+  bioInput: {
+    height: 100,
+    textAlignVertical: 'top',
   },
   errorText: {
     color: 'red',

@@ -1,37 +1,36 @@
-import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import ActionIcons from './ActionIcons';
+import useCollection from '@/firebase/hooks/useCollection';
+import theme from '@/constants/theme';
 
-const artsData = [
-  {
-    id: '1',
-    title: 'Patrick Bateman',
-    artist: 'carlllos.png',
-    artistId: '1',
-    artistImage: require('@/assets/images/profilePhotos/carlos.jpg'),
-    artImage: require('@/assets/images/catalog/Patrick.jpg'),
-    description: 'Desenho do Patrick Bateman que Carlos roubou de Julia só pra ter 2 perfis no app',
-  },
-  {
-    id: '2',
-    title: 'Serj Tankian',
-    artist: 'jxliaazy',
-    artistId: '2',
-    artistImage: require('@/assets/images/profilePhotos/julia.png'),
-    artImage: require('@/assets/images/catalog/Serj.jpg'),
-    description: 'Desenho do Serj Tankian que a Julia fez de fato',
-  },
-];
+interface Art {
+  id: string;
+  title: string;
+  artistName: string;
+  artistId: string;
+  image: string;
+  description: string;
+  likes?: string[];
+}
+
+interface Artist {
+  id: string;
+  name: string;
+  image: string;
+}
 
 export default function Arts({ searchQuery }) {
-
-  const [filteredArts, setFilteredArts] = useState(artsData);
-
+  const { data: artsData, loading: artsLoading } = useCollection<Art>('arts');
+  const { data: artistsData, loading: artistsLoading } = useCollection<Artist>('artists');
+  const [filteredArts, setFilteredArts] = useState<Art[]>([]);
 
   useEffect(() => {
-
-    console.log(`Pesquisando por: "${searchQuery}"`);
+    if (artsLoading) {
+      setFilteredArts([]);
+      return;
+    }
 
     if (searchQuery) {
       const newFilteredArts = artsData.filter(art =>
@@ -39,40 +38,46 @@ export default function Arts({ searchQuery }) {
       );
       setFilteredArts(newFilteredArts);
     } else {
-
       setFilteredArts(artsData);
     }
+  }, [searchQuery, artsData, artsLoading]);
 
-  }, [searchQuery]);
+  const getArtistImage = (artistId: string) => {
+    const artist = artistsData.find(a => a.id === artistId);
+    return artist ? artist.image : 'https://via.placeholder.com/40';
+  };
 
-  const renderArtItem = ({ item }) => (
+  const renderArtItem = ({ item }: { item: Art }) => (
     <View style={styles.artItem}>
       <Link href={{ pathname: "/artists", params: { id: item.artistId } }} asChild>
         <TouchableOpacity style={styles.artistHeader}>
-          <Image source={item.artistImage} style={styles.artistImage} />
-          <Text style={styles.artistName}>{item.artist}</Text>
+          <Image source={{ uri: getArtistImage(item.artistId) }} style={styles.artistImage} />
+          <Text style={styles.artistName}>{item.artistName}</Text>
         </TouchableOpacity>
       </Link>
-      
+
       <Link href={{ pathname: "/artsCatalog", params: { id: item.id } }} asChild>
         <TouchableOpacity>
-          <Image source={item.artImage} style={styles.artImage} />
+          <Image source={{ uri: item.image || 'https://via.placeholder.com/400' }} style={styles.artImage} />
         </TouchableOpacity>
       </Link>
 
       <View style={styles.artInfo}>
         <View style={styles.artActions}>
           <Text style={styles.artTitle}>{item.title}</Text>
-          <ActionIcons />
+          <ActionIcons art={item} />
         </View>
         <Text style={styles.artDescription}>{item.description}</Text>
       </View>
     </View>
   );
 
+  if (artsLoading || artistsLoading) {
+    return <ActivityIndicator size="large" color={theme.colors.light} />;
+  }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
       <FlatList
         data={filteredArts}
         renderItem={renderArtItem}
@@ -119,7 +124,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 5,
   },
-  artActions:{
+  artActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
