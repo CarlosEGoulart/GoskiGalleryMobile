@@ -16,10 +16,10 @@ import {
 
     return (
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: currentTheme.primary }]}
+        style={[styles.button, { backgroundColor: currentTheme.card }]}
         onPress={onPress}
       >
-        <Text style={[styles.buttonText, { color: currentTheme.background }]}>{children}</Text>
+        <Text style={[styles.buttonText, { color: currentTheme.text }]}>{children}</Text>
       </TouchableOpacity>
     );
   }
