@@ -1,14 +1,15 @@
-import { StyleSheet, ScrollView, Button, View } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import React from 'react';
 import StyleButton from './StyleButton';
 import StyleText from './StyleText';
 import { Link } from 'expo-router';
-
+import { useTheme } from '@/context/ThemeContext';
 
 export default function Main() {
+  const { currentTheme } = useTheme();
+
   return (
-    
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: currentTheme.background }]}>
       <StyleText>Goski Gallery</StyleText>
       <StyleText>Divulgue suas obras</StyleText>
       <View style={{ flexDirection: 'row', gap: 10 }}>

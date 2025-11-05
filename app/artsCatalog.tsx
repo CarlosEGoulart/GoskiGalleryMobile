@@ -14,7 +14,7 @@ export default function ArtistsPage() {
   return (
     <ScreenWrapper>
       <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      {id ? <ArtDetails /> : <Arts searchQuery={searchQuery} />}
+      {id ? <ArtDetails art={undefined} /> : <Arts searchQuery={searchQuery} />}
       <Footer />
     </ScreenWrapper>
   );

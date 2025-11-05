@@ -1,12 +1,13 @@
 import { View, StyleSheet, Text } from 'react-native';
 import React from 'react';
 import { Link } from 'expo-router';
+import StyleText from '../StyleText';
 
 export default function Logo() {
   return (
     <View style={styles.container}>
       <Link href={'/'}>
-        <Text style={styles.text}>GoskiGallery</Text>
+        <StyleText>GoskiGallery</StyleText>
       </Link>
     </View>
   );
@@ -17,11 +18,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
-  },
-
-  text: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 20,
   },
 });

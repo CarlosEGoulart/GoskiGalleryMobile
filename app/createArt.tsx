@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { addDoc, collection, serverTimestamp, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import { db } from '@/firebase/config/firebaseConfig';
 import useAuth from '@/firebase/hooks/useAuth';
 import StyleButton from '@/components/StyleButton';
 import StyleText from '@/components/StyleText';
-import theme from '@/constants/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { router } from 'expo-router';
 
 export default function CreateArtPage() {
   const { user } = useAuth();
+  const { currentTheme } = useTheme();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUri, setImageUri] = useState<string | null>(null); // For preview
-  const [imageBase64, setImageBase64] = useState<string | null>(null); // For saving
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,13 +31,12 @@ export default function CreateArtPage() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.5, // Lower quality to reduce base64 string size
-      base64: true, // Ask for the base64 representation
+      quality: 0.5,
+      base64: true,
     });
 
     if (!result.canceled && result.assets && result.assets[0].base64) {
       setImageUri(result.assets[0].uri);
-      // Create a data URL to be used in Image source and stored in DB
       const dataUrl = `data:image/jpeg;base64,${result.assets[0].base64}`;
       setImageBase64(dataUrl);
     }
@@ -68,7 +69,7 @@ export default function CreateArtPage() {
       const artDocRef = await addDoc(collection(db, 'arts'), {
         title,
         description,
-        image: imageBase64, // Save the base64 string
+        image: imageBase64,
         artistId: user.uid,
         artistName: artistName,
         createdAt: serverTimestamp(),
@@ -78,7 +79,7 @@ export default function CreateArtPage() {
         arts: arrayUnion({
           id: artDocRef.id,
           title,
-          image: imageBase64, // Save the base64 string here as well
+          image: imageBase64,
         })
       });
 
@@ -91,90 +92,92 @@ export default function CreateArtPage() {
     }
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      backgroundColor: currentTheme.background,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 20,
+      color: currentTheme.text, // Cor de texto dinâmica
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: currentTheme.subtleText, // Borda dinâmica
+      borderRadius: 5,
+      padding: 10,
+      marginBottom: 15,
+      color: currentTheme.text, // Cor do texto do input
+      width: '100%',
+      backgroundColor: currentTheme.card, // Fundo do input
+    },
+    descriptionInput: {
+      height: 100,
+      textAlignVertical: 'top',
+    },
+    errorText: {
+      color: currentTheme.error, // Cor de erro dinâmica
+      textAlign: 'center',
+      marginBottom: 10,
+    },
+    imagePicker: {
+      backgroundColor: currentTheme.primary, // Fundo do botão
+      padding: 15,
+      borderRadius: 5,
+      alignItems: 'center',
+      marginBottom: 15,
+      width: '100%',
+    },
+    imagePickerText: {
+      color: currentTheme.background, // Cor do texto do botão
+      fontWeight: 'bold',
+    },
+    previewImage: {
+      width: '100%',
+      height: 200,
+      borderRadius: 5,
+      marginBottom: 15,
+    },
+  });
+
   return (
-    <View style={styles.container}>
-      <StyleText style={styles.title}>Adicionar Nova Arte</StyleText>
-      {error && <StyleText style={styles.errorText}>{error}</StyleText>}
-      <TextInput
-        style={styles.input}
-        placeholder="Título da Arte"
-        value={title}
-        onChangeText={setTitle}
-        placeholderTextColor="grey"
-      />
-      <TextInput
-        style={[styles.input, styles.descriptionInput]}
-        placeholder="Descrição"
-        value={description}
-        onChangeText={setDescription}
-        multiline
-        numberOfLines={4}
-        placeholderTextColor="grey"
-      />
-      
-      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-        <Text style={styles.imagePickerText}>Selecionar Imagem</Text>
-      </TouchableOpacity>
+    <ScrollView style={{backgroundColor: currentTheme.background}}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Adicionar Nova Arte</Text>
+          {error && <Text style={styles.errorText}>{error}</Text>}
+          <TextInput
+            style={styles.input}
+            placeholder="Título da Arte"
+            value={title}
+            onChangeText={setTitle}
+            placeholderTextColor={currentTheme.subtleText} // Placeholder dinâmico
+          />
+          <TextInput
+            style={[styles.input, styles.descriptionInput]}
+            placeholder="Descrição"
+            value={description}
+            onChangeText={setDescription}
+            multiline
+            numberOfLines={4}
+            placeholderTextColor={currentTheme.subtleText} // Placeholder dinâmico
+          />
+          
+          <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+            <Text style={styles.imagePickerText}>Selecionar Imagem</Text>
+          </TouchableOpacity>
 
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.previewImage} />}
+          {imageUri && <Image source={{ uri: imageUri }} style={styles.previewImage} />}
 
-      {loading ? (
-        <ActivityIndicator size="large" color={theme.colors.light} />
-      ) : (
-        <StyleButton onPress={handleCreateArt}>Criar Arte</StyleButton>
-      )}
-    </View>
+          {loading ? (
+            <ActivityIndicator size="large" color={currentTheme.primary} />
+          ) : (
+            <StyleButton onPress={handleCreateArt}>Criar Arte</StyleButton>
+          )}
+        </View>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: theme.backgroundColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: 'grey',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-    color: 'white',
-    width: '100%',
-  },
-  descriptionInput: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  imagePicker: {
-    backgroundColor: theme.colors.primary,
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 15,
-    width: '100%',
-  },
-  imagePickerText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  previewImage: {
-    width: '100%',
-    height: 200,
-    borderRadius: 5,
-    marginBottom: 15,
-  },
-});

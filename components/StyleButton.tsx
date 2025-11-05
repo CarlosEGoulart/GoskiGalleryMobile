@@ -2,27 +2,28 @@ import {
     TouchableOpacity,
     Text,
     StyleSheet,
-    ColorValue,
   } from "react-native";
   import React from "react";
-  
+  import { useTheme } from "@/context/ThemeContext";
+
   type ButtonProps = {
     children: React.ReactNode;
-    color?: ColorValue;
     onPress?: () => void;
   };
-  
-  export default function StyleButton({children, color = "#383838", onPress}: ButtonProps) {
+
+  export default function StyleButton({children, onPress}: ButtonProps) {
+    const { currentTheme } = useTheme();
+
     return (
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: color }]}
+        style={[styles.button, { backgroundColor: currentTheme.primary }]}
         onPress={onPress}
       >
-        <Text style={styles.buttonText}>{children}</Text>
+        <Text style={[styles.buttonText, { color: currentTheme.background }]}>{children}</Text>
       </TouchableOpacity>
     );
   }
-  
+
   const styles = StyleSheet.create({
     button: {
       paddingVertical: 12,
@@ -32,12 +33,9 @@ import {
       justifyContent: "center",
     },
     buttonText: {
-      color: "white",
       fontSize: 16,
       lineHeight: 21,
       fontWeight: "bold",
       letterSpacing: 0.25,
     },
   });
-  
-  

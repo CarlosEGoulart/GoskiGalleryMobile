@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import React from "react";
 import "@expo/react-native-action-sheet"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -30,12 +31,14 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <ActionSheetProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
-    </ActionSheetProvider>
+    <ThemeProvider>
+      <ActionSheetProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </ActionSheetProvider>
+    </ThemeProvider>
   );
 }

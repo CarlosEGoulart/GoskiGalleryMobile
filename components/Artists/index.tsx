@@ -1,9 +1,10 @@
-import { StyleSheet, View, FlatList, Image, TouchableOpacity, ActivityIndicator, Text } from 'react-native';
+import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native';
 import React from 'react';
 import { Link } from 'expo-router';
 import StyleButton from '../StyleButton';
 import useCollection from '@/firebase/hooks/useCollection';
-import theme from '@/constants/theme';
+import { useTheme } from '@/context/ThemeContext';
+import Loading from '../Loading';
 
 interface Artist {
   id: string;
@@ -13,6 +14,38 @@ interface Artist {
 
 export default function Artists() {
   const { data: artistsData, loading } = useCollection<Artist>('artists');
+  const { currentTheme } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 10,
+      backgroundColor: currentTheme.background,
+    },
+    artistItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: currentTheme.subtleText,
+    },
+    artistInfo: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
+    },
+    artistImage: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      marginRight: 15,
+    },
+    artistName: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: currentTheme.text,
+    },
+  });
 
   const renderArtistItem = ({ item }: { item: Artist }) => (
     <Link href={{ pathname: "/artists", params: { id: item.id } }} asChild>
@@ -27,7 +60,7 @@ export default function Artists() {
   );
 
   if (loading) {
-    return <ActivityIndicator size="large" color={theme.colors.light} />;
+    return <Loading />;
   }
 
   return (
@@ -40,34 +73,3 @@ export default function Artists() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: theme.backgroundColor,
-  },
-  artistItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  artistInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  artistImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 15,
-  },
-  artistName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: theme.colors.light,
-  },
-});

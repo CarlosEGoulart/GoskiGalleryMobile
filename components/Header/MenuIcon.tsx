@@ -1,40 +1,42 @@
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import theme from "@/constants/theme";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { useRouter } from 'expo-router';
+import { useTheme } from "@/context/ThemeContext";
 
-export default function Actions() {
+export default function MenuIcon({ color }) {
   const { showActionSheetWithOptions } = useActionSheet();
-
   const router = useRouter();
+  const { toggleTheme, theme: currentThemeMode, currentTheme } = useTheme(); 
 
   const handleMenuPress = () => {
-    const options = ['Home', 'Artes', 'Artistas', 'Cancelar'];
-    const cancelButtonIndex = 3;
+    const options = ['Home', 'Artes', 'Artistas', `Mudar para tema ${currentThemeMode === 'dark' ? 'claro' : 'escuro'}`, 'Cancelar'];
+    const cancelButtonIndex = 4;
+    const destructiveButtonIndex = 4;
 
     showActionSheetWithOptions(
       {
         options,
         cancelButtonIndex,
+        destructiveButtonIndex,
         title: "Menu",
         containerStyle: {
-          backgroundColor: '#383838',
+          backgroundColor: currentTheme.card,
           borderRadius: 10,
         },
         textStyle: {
-          color: 'white',
+          color: currentTheme.text,
           fontSize: 18,
           textAlign: 'center',
         },
         titleTextStyle: {
-          color: 'white',
+          color: currentTheme.text,
           fontSize: 20,
           fontWeight: 'bold',
           textAlign: 'center',
         },
-        cancelButtonTintColor: 'red',
+        destructiveColor: currentTheme.error,
       },
       (selectedIndex) => {
         switch (selectedIndex) {
@@ -47,6 +49,9 @@ export default function Actions() {
           case 2:
             router.push('/artists');
             break;
+          case 3:
+            toggleTheme();
+            break;
         }
       }
     );
@@ -55,7 +60,7 @@ export default function Actions() {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleMenuPress}>
-        <AntDesign name="menu" size={24} color="white" />
+        <AntDesign name="menu" size={24} color={color} />
       </TouchableOpacity>
     </View>
   );
@@ -65,6 +70,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    gap: theme.dimension.sm,
+    gap: 10,
   },
 });
