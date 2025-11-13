@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "expo export -p web",
-    "serve": "http-server dist"
+    "serve": "http-server dist -a 0.0.0.0"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^4.1.1",
