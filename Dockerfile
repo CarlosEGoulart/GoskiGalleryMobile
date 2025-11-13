@@ -9,7 +9,6 @@ COPY package.json yarn.lock ./
 
 # Install any needed packages
 RUN yarn install
-RUN
 
 # Bundle app source
 COPY . .
