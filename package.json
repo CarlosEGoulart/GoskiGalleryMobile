@@ -6,7 +6,9 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build": "expo export -p web",
+    "serve": "serve dist -l 3000"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^4.1.1",
@@ -36,7 +38,8 @@
   "devDependencies": {
     "@types/react": "~19.1.0",
     "react-test-renderer": "19.1.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "serve": "^14.2.1"
   },
   "private": true,
   "engines": {
