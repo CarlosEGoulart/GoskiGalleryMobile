@@ -4,8 +4,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '@/firebase/config/firebaseConfig';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import StyleButton from '../StyleButton';
-import theme from '@/constants/theme';
-import { navigate } from 'expo-router/build/global-state/routing';
+import { useTheme } from '@/context/ThemeContext'; // Importa o hook do tema
 
 export function Register() {
   const [name, setName] = useState('');
@@ -14,6 +13,7 @@ export function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [bio, setBio] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const { currentTheme } = useTheme(); // Usa o hook do tema
 
   const handleRegister = async () => {
     setError(null);
@@ -37,12 +37,41 @@ export function Register() {
         bio: bio,
         image: ''
       });
-
-      navigate('/artsCatalog');
+      
+      // A tela RegisterPage cuidará do redirecionamento
     } catch (err: any) {
       setError(err.message);
     }
   };
+
+  // Estilos dinâmicos baseados no tema
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 15,
+      paddingHorizontal: 20,
+      backgroundColor: currentTheme.background // Fundo dinâmico
+    },
+    input: {
+      color: currentTheme.text, // Cor de texto dinâmica
+      borderWidth: 1,
+      borderColor: currentTheme.subtleText, // Cor da borda dinâmica
+      borderRadius: 5,
+      padding: 10,
+      width: '100%',
+    },
+    bioInput: {
+      height: 100,
+      textAlignVertical: 'top',
+    },
+    errorText: {
+      color: 'red',
+      marginBottom: 10,
+      textAlign: 'center',
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -52,7 +81,7 @@ export function Register() {
         placeholder="Nome"
         onChangeText={setName}
         value={name}
-        placeholderTextColor={theme.colors.light}
+        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
         autoCapitalize="words"
       />
       <TextInput
@@ -60,7 +89,7 @@ export function Register() {
         placeholder="Email"
         onChangeText={setEmail}
         value={email}
-        placeholderTextColor={theme.colors.light}
+        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
         autoCapitalize="none"
         keyboardType="email-address"
       />
@@ -69,7 +98,7 @@ export function Register() {
         placeholder="Bio"
         onChangeText={setBio}
         value={bio}
-        placeholderTextColor={theme.colors.light}
+        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
         autoCapitalize="sentences"
         multiline={true}
         numberOfLines={4}
@@ -80,7 +109,7 @@ export function Register() {
         onChangeText={setPassword}
         value={password}
         secureTextEntry
-        placeholderTextColor={theme.colors.light}
+        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
       />
       <TextInput
         style={styles.input}
@@ -88,37 +117,9 @@ export function Register() {
         onChangeText={setConfirmPassword}
         value={confirmPassword}
         secureTextEntry
-        placeholderTextColor={theme.colors.light}
+        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
       />
       <StyleButton onPress={handleRegister}>Registrar</StyleButton>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 15,
-    paddingHorizontal: 20,
-    backgroundColor: theme.backgroundColor
-  },
-  input: {
-    color: theme.colors.light,
-    borderWidth: 1,
-    borderColor: theme.colors.light,
-    borderRadius: 5,
-    padding: 10,
-    width: '100%',
-  },
-  bioInput: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-});

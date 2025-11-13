@@ -1,94 +1,52 @@
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Text } from 'react-native';
 import React from 'react';
-import { useLocalSearchParams } from 'expo-router';
-import StyleText from '../StyleText';
-import { Link } from '@react-navigation/native';
+import ActionIcons from './ActionIcons';
+import { useTheme } from '@/context/ThemeContext'; // Importa o hook do tema
 
-const artsData = {
-  '1': {
-    title: 'Patrick Bateman',
-    artist: 'carlllos.png',
-    artistImage: require('@/assets/images/profilePhotos/carlos.jpg'),
-    image: require('@/assets/images/catalog/Patrick.jpg'),
-    description: 'Desenho do Patrick Bateman que Carlos roubou de Julia só pra ter 2 perfis no app',
-  },
-  
-  '2': {
-    title: 'Serj Tankian',
-    artist: 'jxliaazy',
-    image: require('@/assets/images/catalog/Serj.jpg'),
-    artistImage: require('@/assets/images/profilePhotos/julia.png'),
-    description: 'Desenho do Serj Tankian que a Julia fez de fato',
-  },
-};
-
-export default function Art() {
-  const { id } = useLocalSearchParams();
-  const art = artsData[id];
+export default function Art({ art }) {
+  const { currentTheme } = useTheme(); // Usa o hook do tema
 
   if (!art) {
-    return (
-      <View style={styles.container}>
-        <StyleText>Arte não encontrada</StyleText>
-      </View>
-    );
+    return null;
   }
+
+  // Estilos dinâmicos baseados no tema
+  const styles = StyleSheet.create({
+    container: {
+      marginBottom: 20,
+      backgroundColor: currentTheme.background, // Fundo dinâmico
+    },
+    artImage: {
+      width: '100%',
+      height: 400,
+      resizeMode: 'cover',
+    },
+    artInfo: {
+      padding: 15,
+    },
+    artTitle: {
+      fontSize: 22,
+      fontWeight: 'bold',
+      color: currentTheme.text, // Cor de texto dinâmica
+    },
+    artDescription: {
+      fontSize: 16,
+      marginTop: 5,
+      color: currentTheme.text, // Cor de texto dinâmica
+      marginBottom: 10,
+    },
+  });
 
   return (
     <View style={styles.container}>
-      <Link href={{ pathname: "/artists", params: { id: art.artistId } }} asChild>  
-        <TouchableOpacity style={styles.artistHeader}>
-          <Image source={art.artistImage} style={styles.artistImage} />
-          <Text style={styles.artistName}>{art.artist}</Text>
-        </TouchableOpacity>
-      </Link>
-      <Image source={art.image} style={styles.artImage} />
+      <Image source={{ uri: art.imageUrl }} style={styles.artImage} />
+      
       <View style={styles.artInfo}>
         <Text style={styles.artTitle}>{art.title}</Text>
         <Text style={styles.artDescription}>{art.description}</Text>
+        {/* ActionIcons já está tematizado */}
+        <ActionIcons art={art} />
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    
-  },
-  artImage: {
-    width: '100%',
-    height: 400,
-  },
-  artInfo: {
-    padding: 20,
-  },
-  artTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  artistName: {
-    fontSize: 18,
-    color: 'white',
-    marginTop: 5,
-    fontWeight: 'bold',
-  },
-  artDescription: {
-    fontSize: 16,
-    marginTop: 15,
-    color: 'white'
-  },
-  artistHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-  },
-  artistImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-});

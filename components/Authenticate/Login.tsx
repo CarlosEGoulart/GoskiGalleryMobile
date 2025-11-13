@@ -3,24 +3,47 @@ import { View, TextInput, Text, StyleSheet } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebase/config/firebaseConfig';
 import StyleButton from '../StyleButton';
-import theme from '@/constants/theme';
-import { navigate } from 'expo-router/build/global-state/routing';
+import { useTheme } from '@/context/ThemeContext';
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const { currentTheme } = useTheme();
 
   const handleLogin = async () => {
     setError(null);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/artsCatalog');
     } 
     catch (err: any) {
       setError(err.message);
     }
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 15,
+      paddingHorizontal: 20,
+      backgroundColor: currentTheme.background
+    },
+    input: {
+      color: currentTheme.text,
+      borderWidth: 1,
+      borderColor: currentTheme.subtleText,
+      borderRadius: 5,
+      padding: 10,
+      width: '100%',
+    },
+    errorText: {
+      color: 'red',
+      marginBottom: 10,
+      textAlign: 'center',
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -30,7 +53,7 @@ export function Login() {
         placeholder="Email"
         onChangeText={setEmail}
         value={email}
-        placeholderTextColor={theme.colors.light}
+        placeholderTextColor={currentTheme.subtleText}
         autoCapitalize="none"
         keyboardType="email-address"
       />
@@ -40,33 +63,9 @@ export function Login() {
         onChangeText={setPassword}
         value={password}
         secureTextEntry
-        placeholderTextColor={theme.colors.light}
+        placeholderTextColor={currentTheme.subtleText}
       />
       <StyleButton onPress={handleLogin}>Login</StyleButton>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 15,
-    paddingHorizontal: 20,
-    backgroundColor: theme.backgroundColor
-  },
-  input: {
-    color: theme.colors.light,
-    borderWidth: 1,
-    borderColor: theme.colors.light,
-    borderRadius: 5,
-    padding: 10,
-    width: '100%',
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-});

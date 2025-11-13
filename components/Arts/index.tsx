@@ -1,9 +1,11 @@
-import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import ActionIcons from './ActionIcons';
 import useCollection from '@/firebase/hooks/useCollection';
-import theme from '@/constants/theme';
+import useAuth from '@/firebase/hooks/useAuth';
+import { useTheme } from '@/context/ThemeContext';
+import Loading from '../Loading';
 
 interface Art {
   id: string;
@@ -24,6 +26,8 @@ interface Artist {
 export default function Arts({ searchQuery }) {
   const { data: artsData, loading: artsLoading } = useCollection<Art>('arts');
   const { data: artistsData, loading: artistsLoading } = useCollection<Artist>('artists');
+  const { user } = useAuth();
+  const { currentTheme } = useTheme();
   const [filteredArts, setFilteredArts] = useState<Art[]>([]);
 
   useEffect(() => {
@@ -48,11 +52,11 @@ export default function Arts({ searchQuery }) {
   };
 
   const renderArtItem = ({ item }: { item: Art }) => (
-    <View style={styles.artItem}>
+    <View style={[styles.artItem, { backgroundColor: currentTheme.card }]}>
       <Link href={{ pathname: "/artists", params: { id: item.artistId } }} asChild>
         <TouchableOpacity style={styles.artistHeader}>
           <Image source={{ uri: getArtistImage(item.artistId) }} style={styles.artistImage} />
-          <Text style={styles.artistName}>{item.artistName}</Text>
+          <Text style={[styles.artistName, { color: currentTheme.text }]}>{item.artistName}</Text>
         </TouchableOpacity>
       </Link>
 
@@ -64,20 +68,20 @@ export default function Arts({ searchQuery }) {
 
       <View style={styles.artInfo}>
         <View style={styles.artActions}>
-          <Text style={styles.artTitle}>{item.title}</Text>
-          <ActionIcons art={item} />
+          <Text style={[styles.artTitle, { color: currentTheme.text }]}>{item.title}</Text>
+          <ActionIcons art={item} user={user} />
         </View>
-        <Text style={styles.artDescription}>{item.description}</Text>
+        <Text style={[styles.artDescription, { color: currentTheme.subtleText }]}>{item.description}</Text>
       </View>
     </View>
   );
 
   if (artsLoading || artistsLoading) {
-    return <ActivityIndicator size="large" color={theme.colors.light} />;
+    return <Loading />;
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
+    <View style={{ flex: 1, backgroundColor: currentTheme.background }}>
       <FlatList
         data={filteredArts}
         renderItem={renderArtItem}
@@ -106,7 +110,6 @@ const styles = StyleSheet.create({
   artistName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white',
   },
   artImage: {
     width: '100%',
@@ -118,10 +121,8 @@ const styles = StyleSheet.create({
   artTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white',
   },
   artDescription: {
-    color: 'white',
     marginTop: 5,
   },
   artActions: {

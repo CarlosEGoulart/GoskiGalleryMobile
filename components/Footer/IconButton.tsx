@@ -10,21 +10,22 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 type IconButtonProps = {
     icon: React.ReactNode;
     text: string;
+    color: string;
     active?: boolean;
 } & TouchableOpacityProps;
 
-export default function IconButton({ icon, text, active }: IconButtonProps) {
-    const color = active ? 'white' : 'grey';
+export default function IconButton({ icon, text, active, color }: IconButtonProps) {
+    const iconColor = active ? color : color;
 
     return (
         <TouchableOpacity style={styles.container}>
             {typeof icon === 'string' ? (
-                <AntDesign name={icon as any} size={24} color={color} />
+                <AntDesign name={icon as any} size={24} color={iconColor} />
             ) : (
                 icon
             )}
 
-            <Text style={[styles.text, { color }]}>{text}</Text>
+            <Text style={[styles.text, { color: iconColor }]}>{text}</Text>
         </TouchableOpacity>
     );
 }

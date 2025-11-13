@@ -3,7 +3,7 @@ import React from 'react';
 import StyleText from '../StyleText';
 import { useLocalSearchParams } from 'expo-router';
 import useDocument from '@/firebase/hooks/useDocument';
-import theme from '@/constants/theme';
+import { useTheme } from '@/context/ThemeContext';
 
 interface Artist {
   id: string;
@@ -16,9 +16,51 @@ interface Artist {
 export default function ArtistProfile() {
   const { id } = useLocalSearchParams();
   const { data: artist, loading } = useDocument<Artist>('artists', id as string);
+  const { currentTheme } = useTheme();
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: currentTheme.background,
+    },
+    profileHeader: {
+      alignItems: 'center',
+      padding: 20,
+    },
+    profileImage: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+    },
+    artistName: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginTop: 10,
+      color: currentTheme.text,
+    },
+    artistBio: {
+      fontSize: 16,
+      color: currentTheme.subtleText,
+      marginTop: 10,
+      textAlign: 'center',
+    },
+    gallery: {
+      flex: 1,
+    },
+    artItem: {
+      flex: 1,
+      flexDirection: 'column',
+      margin: 1,
+    },
+    artImage: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 300,
+      flex: 1,
+    },
+  });
 
   if (loading) {
-    return <ActivityIndicator size="large" color={theme.colors.light} />;
+    return <ActivityIndicator size="large" color={currentTheme.primary} />;
   }
 
   if (!artist) {
@@ -52,45 +94,3 @@ export default function ArtistProfile() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.backgroundColor,
-  },
-  profileHeader: {
-    alignItems: 'center',
-    padding: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  artistName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 10,
-    color: theme.colors.light,
-  },
-  artistBio: {
-    fontSize: 16,
-    color: 'gray',
-    marginTop: 10,
-    textAlign: 'center',
-  },
-  gallery: {
-    flex: 1,
-  },
-  artItem: {
-    flex: 1,
-    flexDirection: 'column',
-    margin: 1,
-  },
-  artImage: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 300,
-    flex: 1,
-  },
-});

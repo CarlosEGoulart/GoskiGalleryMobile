@@ -3,10 +3,10 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export default function SearchIcon({ onPress, searchActive }) {
+export default function SearchIcon({ onPress, searchActive, color }) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <AntDesign name={searchActive ? "close" : "search"} size={24} color={'white'} />
+      <AntDesign name={searchActive ? "close" : "search"} size={24} color={color} />
     </TouchableOpacity>
   );
 }
