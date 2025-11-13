@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import Logo from './Logo';
 import MenuIcon from './MenuIcon';
 import SearchIcon from './SearchIcon';
-import useAuth from '@/firebase/hooks/useAuth';
+import usePocketBaseAuth from '@/pocketbase/hooks/usePocketBaseAuth';
 import { Link, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/context/ThemeContext';
 
 export default function Header({ searchQuery, setSearchQuery }) {
   const [searchActive, setSearchActive] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout } = usePocketBaseAuth();
   const { currentTheme } = useTheme();
 
   const toggleSearch = () => {

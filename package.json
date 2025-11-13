@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "expo export -p web",
-    "serve": "http-server dist -a 0.0.0.0"
+    "serve": "serve dist -l tcp://0.0.0.0:3000"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^4.1.1",
@@ -25,6 +25,7 @@
     "expo-status-bar": "~3.0.8",
     "expo-web-browser": "~15.0.7",
     "firebase": "^12.4.0",
+    "pocketbase": "^0.26.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.4",
@@ -38,9 +39,10 @@
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@types/react": "~19.1.0",
+    "babel-plugin-module-resolver": "^5.0.2",
     "react-test-renderer": "19.1.0",
-    "typescript": "~5.9.2",
-    "http-server": "^14.1.1"
+    "serve": "^14.2.1",
+    "typescript": "~5.9.2"
   },
   "private": true,
   "engines": {

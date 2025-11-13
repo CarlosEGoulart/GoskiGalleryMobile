@@ -1,70 +1,71 @@
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { db } from '@/firebase/config/firebaseConfig';
-import { doc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from 'firebase/firestore';
 import { useTheme } from '@/context/ThemeContext';
 import { Link } from 'expo-router';
+import { usePocketBaseStore } from '@/pocketbase/stores/usePocketBaseStore';
+import { Record } from 'pocketbase';
 
-interface User {
-  uid: string;
+interface User extends Record {
+  id: string;
 }
 
-interface Art {
+interface Art extends Record {
   id: string;
   title: string;
-  artistId: string;
+  artist: string; // Artist ID
   likes?: string[];
 }
 
 export default function ActionIcons({ art, user }: { art: Art, user: User | null }) {
   const { currentTheme } = useTheme();
+  const { pocketBase: pb } = usePocketBaseStore();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(art.likes?.length || 0);
-  const isOwner = user ? user.uid === art.artistId : false;
+  
+  const isOwner = user ? user.id === art.artist : false;
 
   useEffect(() => {
-    if (!art.id) return;
-
-    const artRef = doc(db, 'arts', art.id);
-    const unsubscribe = onSnapshot(artRef, (doc) => {
-      const data = doc.data();
-      const likes = data?.likes || [];
-      setLikeCount(likes.length);
-      
-      if (user?.uid) {
-        setIsLiked(likes.includes(user.uid));
-      }
-    });
-
-    return () => unsubscribe();
-  }, [art.id, user?.uid]);
+    if (art.likes && user) {
+      setIsLiked(art.likes.includes(user.id));
+    }
+    setLikeCount(art.likes?.length || 0);
+  }, [art, user]);
 
   const handleLike = async () => {
-    if (!user?.uid) {
-      console.log('Usuário não logado, não pode curtir.');
+    if (!user?.id) {
+      console.log('User not logged in, cannot like.');
       return;
     }
 
-    const artRef = doc(db, 'arts', art.id);
+    // Optimistic update
+    const newIsLiked = !isLiked;
+    const newLikeCount = newIsLiked ? likeCount + 1 : likeCount - 1;
+    setIsLiked(newIsLiked);
+    setLikeCount(newLikeCount);
 
-    if (isLiked) {
-        await updateDoc(artRef, {
-        likes: arrayRemove(user.uid)
-      });
-    } else {
-        await updateDoc(artRef, {
-        likes: arrayUnion(user.uid)
-      });
+    try {
+      const currentLikes = art.likes || [];
+      const newLikes = newIsLiked
+        ? [...currentLikes, user.id]
+        : currentLikes.filter(id => id !== user.id);
+
+      await pb.collection('arts').update(art.id, { 'likes': newLikes });
+    } catch (error) {
+      console.error("Error updating likes:", error);
+      // Revert optimistic update on error
+      setIsLiked(!newIsLiked);
+      setLikeCount(newIsLiked ? newLikeCount - 1 : newLikeCount + 1);
     }
   };
+
   const likeColor = isLiked ? currentTheme.primary : currentTheme.text;
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleLike} style={styles.iconButton}>
         <AntDesign 
-          name='heart'
+          name={isLiked ? 'heart' : 'hearto'}
           size={24} 
           color={likeColor}
         />
@@ -84,18 +85,18 @@ export default function ActionIcons({ art, user }: { art: Art, user: User | null
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 10,
-    },
-    iconButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    likeCountText: {
-      marginLeft: 5,
-      fontSize: 16,
-      fontWeight: 'bold',
-    }
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  iconButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  likeCountText: {
+    marginLeft: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
 });

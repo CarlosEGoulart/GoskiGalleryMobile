@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, StyleSheet } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '@/firebase/config/firebaseConfig';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import StyleButton from '../StyleButton';
-import { useTheme } from '@/context/ThemeContext'; // Importa o hook do tema
+import { useTheme } from '@/context/ThemeContext';
+import usePocketBaseAuth from '@/pocketbase/hooks/usePocketBaseAuth';
 
 export function Register() {
+  const { registerUser } = usePocketBaseAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [bio, setBio] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const { currentTheme } = useTheme(); // Usa o hook do tema
+  const { currentTheme } = useTheme();
 
   const handleRegister = async () => {
     setError(null);
@@ -24,27 +23,13 @@ export function Register() {
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      const artistDocRef = doc(db, 'artists', user.uid);
-
-      await setDoc(artistDocRef, {
-        uid: user.uid,
-        name: name,
-        email: user.email,
-        createdAt: Timestamp.fromDate(new Date()),
-        bio: bio,
-        image: ''
-      });
-      
-      // A tela RegisterPage cuidará do redirecionamento
+      await registerUser(email, password, confirmPassword, name, bio);
+      // The RegisterPage will handle the redirect after successful login.
     } catch (err: any) {
       setError(err.message);
     }
   };
 
-  // Estilos dinâmicos baseados no tema
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -52,12 +37,12 @@ export function Register() {
       alignItems: 'center',
       gap: 15,
       paddingHorizontal: 20,
-      backgroundColor: currentTheme.background // Fundo dinâmico
+      backgroundColor: currentTheme.background
     },
     input: {
-      color: currentTheme.text, // Cor de texto dinâmica
+      color: currentTheme.text, 
       borderWidth: 1,
-      borderColor: currentTheme.subtleText, // Cor da borda dinâmica
+      borderColor: currentTheme.subtleText,
       borderRadius: 5,
       padding: 10,
       width: '100%',
@@ -81,7 +66,7 @@ export function Register() {
         placeholder="Nome"
         onChangeText={setName}
         value={name}
-        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
+        placeholderTextColor={currentTheme.subtleText}
         autoCapitalize="words"
       />
       <TextInput
@@ -89,7 +74,7 @@ export function Register() {
         placeholder="Email"
         onChangeText={setEmail}
         value={email}
-        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
+        placeholderTextColor={currentTheme.subtleText}
         autoCapitalize="none"
         keyboardType="email-address"
       />
@@ -98,7 +83,7 @@ export function Register() {
         placeholder="Bio"
         onChangeText={setBio}
         value={bio}
-        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
+        placeholderTextColor={currentTheme.subtleText}
         autoCapitalize="sentences"
         multiline={true}
         numberOfLines={4}
@@ -109,7 +94,7 @@ export function Register() {
         onChangeText={setPassword}
         value={password}
         secureTextEntry
-        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
+        placeholderTextColor={currentTheme.subtleText}
       />
       <TextInput
         style={styles.input}
@@ -117,7 +102,7 @@ export function Register() {
         onChangeText={setConfirmPassword}
         value={confirmPassword}
         secureTextEntry
-        placeholderTextColor={currentTheme.subtleText} // Cor do placeholder dinâmica
+        placeholderTextColor={currentTheme.subtleText}
       />
       <StyleButton onPress={handleRegister}>Registrar</StyleButton>
     </View>

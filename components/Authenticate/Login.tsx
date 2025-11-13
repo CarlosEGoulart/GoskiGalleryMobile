@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, StyleSheet } from 'react-native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/firebase/config/firebaseConfig';
 import StyleButton from '../StyleButton';
 import { useTheme } from '@/context/ThemeContext';
+import usePocketBaseAuth from '@/pocketbase/hooks/usePocketBaseAuth';
 
 export function Login() {
+  const { login } = usePocketBaseAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,8 @@ export function Login() {
   const handleLogin = async () => {
     setError(null);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await login(email, password);
+      // On successful login, the useEffect in LoginPage will handle the redirect.
     } 
     catch (err: any) {
       setError(err.message);

@@ -2,9 +2,10 @@ import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react
 import React from 'react';
 import { Link } from 'expo-router';
 import StyleButton from '../StyleButton';
-import useCollection from '@/firebase/hooks/useCollection';
+import usePocketBaseCollection from '@/pocketbase/hooks/usePocketBaseCollection';
 import { useTheme } from '@/context/ThemeContext';
 import Loading from '../Loading';
+import { usePocketBaseStore } from '@/pocketbase/stores/usePocketBaseStore';
 
 interface Artist {
   id: string;
@@ -13,8 +14,9 @@ interface Artist {
 }
 
 export default function Artists() {
-  const { data: artistsData, loading } = useCollection<Artist>('artists');
+  const { data: artistsData, loading } = usePocketBaseCollection<Artist>('users');
   const { currentTheme } = useTheme();
+  const { pocketBase: pb } = usePocketBaseStore();
 
   const styles = StyleSheet.create({
     container: {
@@ -51,7 +53,10 @@ export default function Artists() {
     <Link href={{ pathname: "/artists", params: { id: item.id } }} asChild>
       <TouchableOpacity style={styles.artistItem}>
         <View style={styles.artistInfo}>
-          <Image source={{ uri: item.image || 'https://via.placeholder.com/50' }} style={styles.artistImage} />
+          <Image 
+            source={{ uri: item.image ? pb.files.getUrl(item, item.image) : 'https://via.placeholder.com/50' }} 
+            style={styles.artistImage} 
+          />
           <Text style={styles.artistName}>{item.name}</Text>
         </View>
         <StyleButton>Seguir</StyleButton>
