@@ -1,34 +1,34 @@
-import { StyleSheet, View, FlatList, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, FlatList, Image, TouchableOpacity, ActivityIndicator, Text } from 'react-native';
 import React from 'react';
-import StyleText from '../StyleText';
 import { Link } from 'expo-router';
 import StyleButton from '../StyleButton';
+import useCollection from '@/firebase/hooks/useCollection';
+import theme from '@/constants/theme';
 
-const artistsData = [
-  {
-    id: '1',
-    name: 'carlllos.png',
-    image: require('@/assets/images/profilePhotos/carlos.jpg'),
-  },
-  {
-    id: '2',
-    name: 'jxliaazy',
-    image: require('@/assets/images/profilePhotos/julia.png'),
-  },
-];
+interface Artist {
+  id: string;
+  name: string;
+  image: string;
+}
 
 export default function Artists() {
-  const renderArtistItem = ({ item }) => (
+  const { data: artistsData, loading } = useCollection<Artist>('artists');
+
+  const renderArtistItem = ({ item }: { item: Artist }) => (
     <Link href={{ pathname: "/artists", params: { id: item.id } }} asChild>
       <TouchableOpacity style={styles.artistItem}>
         <View style={styles.artistInfo}>
-          <Image source={item.image} style={styles.artistImage} />
-          <StyleText style={styles.artistName}>{item.name}</StyleText>
+          <Image source={{ uri: item.image || 'https://via.placeholder.com/50' }} style={styles.artistImage} />
+          <Text style={styles.artistName}>{item.name}</Text>
         </View>
         <StyleButton>Seguir</StyleButton>
       </TouchableOpacity>
     </Link>
   );
+
+  if (loading) {
+    return <ActivityIndicator size="large" color={theme.colors.light} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: theme.backgroundColor,
   },
   artistItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   artistInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   artistImage: {
     width: 50,
@@ -67,5 +68,6 @@ const styles = StyleSheet.create({
   artistName: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: theme.colors.light,
   },
 });

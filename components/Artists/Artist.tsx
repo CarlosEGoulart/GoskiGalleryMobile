@@ -1,30 +1,25 @@
-import { StyleSheet, View, Image, FlatList } from 'react-native';
+import { StyleSheet, View, Image, FlatList, ActivityIndicator, Text } from 'react-native';
 import React from 'react';
 import StyleText from '../StyleText';
 import { useLocalSearchParams } from 'expo-router';
+import useDocument from '@/firebase/hooks/useDocument';
+import theme from '@/constants/theme';
 
-const artistsData = {
-  '1': {
-    name: 'carlllos.png',
-    image: require('@/assets/images/profilePhotos/carlos.jpg'),
-    bio: 'Estudante de TSI que rouba desenhos da namorada',
-    arts: [
-      { id: '1', title: 'Patrick Bateman', image: require('@/assets/images/catalog/Patrick.jpg') },
-    ]
-  },
-  '2': {
-    name: 'jxliaazy',
-    image: require('@/assets/images/profilePhotos/julia.png'),
-    bio: 'Estudante de Artes que é muito boa desenhista, atriz, musica, e tudo q pega pra fazer',
-    arts: [
-       { id: '2', title: 'Serj Tankian', image: require('@/assets/images/catalog/Serj.jpg') },
-    ]
-  },
-};
+interface Artist {
+  id: string;
+  name: string;
+  image: string;
+  bio: string;
+  arts?: any[];
+}
 
 export default function ArtistProfile() {
   const { id } = useLocalSearchParams();
-  const artist = artistsData[id];
+  const { data: artist, loading } = useDocument<Artist>('artists', id as string);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color={theme.colors.light} />;
+  }
 
   if (!artist) {
     return (
@@ -36,21 +31,21 @@ export default function ArtistProfile() {
 
   const renderArtItem = ({ item }) => (
     <View style={styles.artItem}>
-      <Image source={item.image} style={styles.artImage} />
+      <Image source={{ uri: item.image }} style={styles.artImage} />
     </View>
   );
 
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
-        <Image source={artist.image} style={styles.profileImage} />
-        <StyleText style={styles.artistName}>{artist.name}</StyleText>
-        <StyleText style={styles.artistBio}>{artist.bio}</StyleText>
+        <Image source={{ uri: artist.image || 'https://via.placeholder.com/100' }} style={styles.profileImage} />
+        <Text style={styles.artistName}>{artist.name}</Text>
+        <Text style={styles.artistBio}>{artist.bio}</Text>
       </View>
       <FlatList
-        data={artist.arts}
+        data={artist.arts || []}
         renderItem={renderArtItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         numColumns={3}
         style={styles.gallery}
       />
@@ -61,6 +56,7 @@ export default function ArtistProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: theme.backgroundColor,
   },
   profileHeader: {
     alignItems: 'center',
@@ -75,6 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 10,
+    color: theme.colors.light,
   },
   artistBio: {
     fontSize: 16,
