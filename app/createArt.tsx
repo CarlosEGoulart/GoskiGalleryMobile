@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { usePocketBaseStore } from '@/pocketbase/stores/usePocketBaseStore';
 import StyleButton from '@/components/StyleButton';
 import { useTheme } from '@/context/ThemeContext';
+import { usePocketBaseStore } from '@/pocketbaseFiles/stores/usePocketBaseStore';
+import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function CreateArtPage() {
   const { user, pocketBase: pb } = usePocketBaseStore();

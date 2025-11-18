@@ -28,13 +28,21 @@ Para configurar e rodar este projeto em seu ambiente local, siga os passos abaix
    cd GoskiGallery
    ```
 3. Instale LTS
-   ```bash
-   nvm install --lts
+   ```bash   nvm install --lts
    ```
 4. Instale as dependências:
    ```bash
+   corepack enable
+   ```
+
+   ```bash
+   export PATH="$(yarn global bin):$PATH"
+   ```
+
+   ```bash
    yarn install
    ```
+
 
 ### Rodando a Aplicação
 

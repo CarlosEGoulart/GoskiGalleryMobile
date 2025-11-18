@@ -1,11 +1,11 @@
-import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native';
-import React from 'react';
-import { Link } from 'expo-router';
-import StyleButton from '../StyleButton';
-import usePocketBaseCollection from '@/pocketbase/hooks/usePocketBaseCollection';
 import { useTheme } from '@/context/ThemeContext';
+import usePocketBaseCollection from '@/pocketbaseFiles/hooks/usePocketBaseCollection';
+import { usePocketBaseStore } from '@/pocketbaseFiles/stores/usePocketBaseStore';
+import { Link } from 'expo-router';
+import React from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Loading from '../Loading';
-import { usePocketBaseStore } from '@/pocketbase/stores/usePocketBaseStore';
+import StyleButton from '../StyleButton';
 
 interface Artist {
   id: string;

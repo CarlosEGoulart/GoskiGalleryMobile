@@ -1,7 +1,7 @@
 import { Login } from "@/components/Authenticate";
 import Header from '@/components/Header';
 import ScreenWrapper from "@/components/ScreenWrapper";
-import usePocketBaseAuth from "@/pocketbase/hooks/usePocketBaseAuth";
+import usePocketBaseAuth from "@/pocketbaseFiles/hooks/usePocketBaseAuth";
 import { router } from "expo-router";
 import { useEffect } from "react";
 

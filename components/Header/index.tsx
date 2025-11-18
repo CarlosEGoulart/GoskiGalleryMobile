@@ -1,13 +1,13 @@
 // GoskiGallery/components/Header/index.tsx
-import { View, StyleSheet, TextInput, Pressable } from 'react-native';
+import { useTheme } from '@/context/ThemeContext';
+import usePocketBaseAuth from '@/pocketbaseFiles/hooks/usePocketBaseAuth';
+import { Ionicons } from '@expo/vector-icons';
+import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Logo from './Logo';
 import MenuIcon from './MenuIcon';
 import SearchIcon from './SearchIcon';
-import usePocketBaseAuth from '@/pocketbase/hooks/usePocketBaseAuth';
-import { Link, router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@/context/ThemeContext';
 
 export default function Header({ searchQuery, setSearchQuery }) {
   const [searchActive, setSearchActive] = useState(false);

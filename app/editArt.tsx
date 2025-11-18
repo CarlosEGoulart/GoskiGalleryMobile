@@ -1,10 +1,10 @@
-import { View, Text, TextInput, StyleSheet, ActivityIndicator, Alert } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { useLocalSearchParams, router } from 'expo-router';
-import { usePocketBaseStore } from '@/pocketbase/stores/usePocketBaseStore';
-import usePocketBaseDocument from '@/pocketbase/hooks/usePocketBaseDocument';
 import StyleButton from '@/components/StyleButton';
 import { useTheme } from '@/context/ThemeContext';
+import usePocketBaseDocument from '@/pocketbaseFiles/hooks/usePocketBaseDocument';
+import { usePocketBaseStore } from '@/pocketbaseFiles/stores/usePocketBaseStore';
+import { router, useLocalSearchParams } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function EditArtPage() {
   const { id } = useLocalSearchParams();

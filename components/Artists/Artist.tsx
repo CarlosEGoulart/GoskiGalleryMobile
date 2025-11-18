@@ -1,17 +1,17 @@
-import {
-  StyleSheet,
-  View,
-  Image,
-  FlatList,
-  ActivityIndicator,
-  Text,
-} from "react-native";
-import React, { useMemo } from "react";
-import { useLocalSearchParams } from "expo-router";
-import usePocketBaseDocument from "@/pocketbase/hooks/usePocketBaseDocument";
-import usePocketBaseCollection from "@/pocketbase/hooks/usePocketBaseCollection";
 import { useTheme } from "@/context/ThemeContext";
-import { usePocketBaseStore } from "@/pocketbase/stores/usePocketBaseStore";
+import usePocketBaseCollection from "@/pocketbaseFiles/hooks/usePocketBaseCollection";
+import usePocketBaseDocument from "@/pocketbaseFiles/hooks/usePocketBaseDocument";
+import { usePocketBaseStore } from "@/pocketbaseFiles/stores/usePocketBaseStore";
+import { useLocalSearchParams } from "expo-router";
+import React, { useMemo } from "react";
+import {
+    ActivityIndicator,
+    FlatList,
+    Image,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 
 interface Artist {
   id: string;

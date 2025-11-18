@@ -1,11 +1,11 @@
-import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Link } from 'expo-router';
-import ActionIcons from './ActionIcons';
-import usePocketBaseCollection from '@/pocketbase/hooks/usePocketBaseCollection';
-import { usePocketBaseStore } from '@/pocketbase/stores/usePocketBaseStore';
 import { useTheme } from '@/context/ThemeContext';
+import usePocketBaseCollection from '@/pocketbaseFiles/hooks/usePocketBaseCollection';
+import { usePocketBaseStore } from '@/pocketbaseFiles/stores/usePocketBaseStore';
+import { Link } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Loading from '../Loading';
+import ActionIcons from './ActionIcons';
 
 interface Art {
   id: string;

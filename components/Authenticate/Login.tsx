@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet } from 'react-native';
-import StyleButton from '../StyleButton';
 import { useTheme } from '@/context/ThemeContext';
-import usePocketBaseAuth from '@/pocketbase/hooks/usePocketBaseAuth';
+import usePocketBaseAuth from '@/pocketbaseFiles/hooks/usePocketBaseAuth';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import StyleButton from '../StyleButton';
 
 export function Login() {
   const { login } = usePocketBaseAuth();

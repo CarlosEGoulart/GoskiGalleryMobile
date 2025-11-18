@@ -1,10 +1,10 @@
-import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { useTheme } from '@/context/ThemeContext';
+import { usePocketBaseStore } from '@/pocketbaseFiles/stores/usePocketBaseStore';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { Link } from 'expo-router';
-import { usePocketBaseStore } from '@/pocketbase/stores/usePocketBaseStore';
 import { Record } from 'pocketbase';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface User extends Record {
   id: string;

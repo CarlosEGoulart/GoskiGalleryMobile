@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet } from 'react-native';
-import StyleButton from '../StyleButton';
 import { useTheme } from '@/context/ThemeContext';
-import usePocketBaseAuth from '@/pocketbase/hooks/usePocketBaseAuth';
+import usePocketBaseAuth from '@/pocketbaseFiles/hooks/usePocketBaseAuth';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import StyleButton from '../StyleButton';
 
 export function Register() {
   const { registerUser } = usePocketBaseAuth();
@@ -24,7 +24,6 @@ export function Register() {
 
     try {
       await registerUser(email, password, confirmPassword, name, bio);
-      // The RegisterPage will handle the redirect after successful login.
     } catch (err: any) {
       setError(err.message);
     }

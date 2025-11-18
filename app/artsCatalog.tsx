@@ -1,12 +1,12 @@
 // GoskiGallery/app/artsCatalog.tsx
-import React, { useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
 import Art from '@/components/Arts/Art';
 import Arts from '@/components/Arts/index';
-import ScreenWrapper from '@/components/ScreenWrapper';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import usePocketBaseDocument from '@/pocketbase/hooks/usePocketBaseDocument';
+import Header from '@/components/Header';
+import ScreenWrapper from '@/components/ScreenWrapper';
+import usePocketBaseDocument from '@/pocketbaseFiles/hooks/usePocketBaseDocument';
+import { useLocalSearchParams } from 'expo-router';
+import React, { useState } from 'react';
 
 export default function ArtistsPage() {
   const { id } = useLocalSearchParams();
