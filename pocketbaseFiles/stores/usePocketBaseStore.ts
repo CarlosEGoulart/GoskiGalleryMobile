@@ -2,8 +2,7 @@ import { create } from 'zustand';
 import PocketBase from 'pocketbase';
 import type { Record } from 'pocketbase';
 
-// Initialize PocketBase
-const pocketBase = new PocketBase('https://8090-firebase-goskigallerymobile-1758814611804.cluster-mdgxqvvkkbfpqrfigfiuugu5pk.cloudworkstations.dev');
+const pocketBase = new PocketBase('http://127.0.0.1:8090');
 
 type PocketBaseState = {
     user: Record | null;
@@ -17,7 +16,6 @@ export const usePocketBaseStore = create<PocketBaseState>((set) => ({
     setUser: (user) => set({ user }),
 }));
 
-// Listen to auth changes to update the store automatically
 pocketBase.authStore.onChange((token, model) => {
     usePocketBaseStore.getState().setUser(model);
 }, true);
