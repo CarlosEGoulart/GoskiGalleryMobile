@@ -28,7 +28,8 @@ Para configurar e rodar este projeto em seu ambiente local, siga os passos abaix
    cd GoskiGallery
    ```
 3. Instale LTS
-   ```bash   nvm install --lts
+   ```bash   
+   nvm install --lts
    ```
 4. Instale as dependências:
    ```bash

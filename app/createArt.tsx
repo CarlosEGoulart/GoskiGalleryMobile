@@ -5,7 +5,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { db } from '@/firebase/config/firebaseConfig';
 import useAuth from '@/firebase/hooks/useAuth';
 import StyleButton from '@/components/StyleButton';
-import StyleText from '@/components/StyleText';
 import { useTheme } from '@/context/ThemeContext';
 import { router } from 'expo-router';
 
@@ -103,29 +102,29 @@ export default function CreateArtPage() {
       fontWeight: 'bold',
       textAlign: 'center',
       marginBottom: 20,
-      color: currentTheme.text, // Cor de texto dinâmica
+      color: currentTheme.text,
     },
     input: {
       borderWidth: 1,
-      borderColor: currentTheme.subtleText, // Borda dinâmica
+      borderColor: currentTheme.subtleText,
       borderRadius: 5,
       padding: 10,
       marginBottom: 15,
-      color: currentTheme.text, // Cor do texto do input
+      color: currentTheme.text,
       width: '100%',
-      backgroundColor: currentTheme.card, // Fundo do input
+      backgroundColor: currentTheme.card,
     },
     descriptionInput: {
       height: 100,
       textAlignVertical: 'top',
     },
     errorText: {
-      color: currentTheme.error, // Cor de erro dinâmica
+      color: currentTheme.error,
       textAlign: 'center',
       marginBottom: 10,
     },
     imagePicker: {
-      backgroundColor: currentTheme.primary, // Fundo do botão
+      backgroundColor: currentTheme.primary,
       padding: 15,
       borderRadius: 5,
       alignItems: 'center',
@@ -133,7 +132,7 @@ export default function CreateArtPage() {
       width: '100%',
     },
     imagePickerText: {
-      color: currentTheme.background, // Cor do texto do botão
+      color: currentTheme.text,
       fontWeight: 'bold',
     },
     previewImage: {
@@ -154,7 +153,7 @@ export default function CreateArtPage() {
             placeholder="Título da Arte"
             value={title}
             onChangeText={setTitle}
-            placeholderTextColor={currentTheme.subtleText} // Placeholder dinâmico
+            placeholderTextColor={currentTheme.subtleText}
           />
           <TextInput
             style={[styles.input, styles.descriptionInput]}
@@ -163,7 +162,7 @@ export default function CreateArtPage() {
             onChangeText={setDescription}
             multiline
             numberOfLines={4}
-            placeholderTextColor={currentTheme.subtleText} // Placeholder dinâmico
+            placeholderTextColor={currentTheme.subtleText}
           />
           
           <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>

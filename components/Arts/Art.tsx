@@ -1,20 +1,19 @@
 import { StyleSheet, View, Image, Text } from 'react-native';
 import React from 'react';
 import ActionIcons from './ActionIcons';
-import { useTheme } from '@/context/ThemeContext'; // Importa o hook do tema
+import { useTheme } from '@/context/ThemeContext';
 
 export default function Art({ art }) {
-  const { currentTheme } = useTheme(); // Usa o hook do tema
+  const { currentTheme } = useTheme();
 
   if (!art) {
     return null;
   }
 
-  // Estilos dinâmicos baseados no tema
   const styles = StyleSheet.create({
     container: {
       marginBottom: 20,
-      backgroundColor: currentTheme.background, // Fundo dinâmico
+      backgroundColor: currentTheme.background,
     },
     artImage: {
       width: '100%',
@@ -27,12 +26,12 @@ export default function Art({ art }) {
     artTitle: {
       fontSize: 22,
       fontWeight: 'bold',
-      color: currentTheme.text, // Cor de texto dinâmica
+      color: currentTheme.text,
     },
     artDescription: {
       fontSize: 16,
       marginTop: 5,
-      color: currentTheme.text, // Cor de texto dinâmica
+      color: currentTheme.text,
       marginBottom: 10,
     },
   });
@@ -45,7 +44,7 @@ export default function Art({ art }) {
         <Text style={styles.artTitle}>{art.title}</Text>
         <Text style={styles.artDescription}>{art.description}</Text>
         {/* ActionIcons já está tematizado */}
-        <ActionIcons art={art} />
+        <ActionIcons art={art} user={null} />
       </View>
     </View>
   );
