@@ -55,8 +55,7 @@ export default function CreateArtPage() {
       formData.append('description', description);
       formData.append('artist', user.id);
       formData.append('artistName', user.name);
-
-      // Correctly format the image for multipart/form-data
+      
       const filename = imageUri.split('/').pop();
       const match = /\.(\w+)$/.exec(filename!);
       const type = match ? `image/${match[1]}` : `image`;

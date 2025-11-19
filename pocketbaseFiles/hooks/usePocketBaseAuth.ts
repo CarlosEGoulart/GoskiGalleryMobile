@@ -24,21 +24,18 @@ export const usePocketBaseAuth = () => {
         pocketBase.authStore.clear();
     };
 
-    const registerUser = async (registrationData: any) => {
+    const registerUser = async (registrationData: { email: string, password: string, passwordConfirm: string, name: string, bio: string }) => {
         try {
-            const { email, password, name, bio } = registrationData;
-            
-            const userData = {
-                email,
-                password,
-                passwordConfirm: password,
-                name,
-                bio,
+            const dataToCreate = {
+                email: registrationData.email,
+                password: registrationData.password,
+                passwordConfirm: registrationData.passwordConfirm,
+                name: registrationData.name,
+                bio: registrationData.bio,
             };
 
-
-            await pocketBase.collection('artists').create(userData);
-            await login({ email, password });
+            await pocketBase.collection('artists').create(dataToCreate);
+            await login({ email: registrationData.email, password: registrationData.password });
 
         } catch (err) {
             if (err instanceof ClientResponseError) {

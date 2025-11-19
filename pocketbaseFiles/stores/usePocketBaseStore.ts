@@ -12,7 +12,7 @@ type PocketBaseState = {
 
 export const usePocketBaseStore = create<PocketBaseState>((set) => ({
     user: pocketBase.authStore.model,
-    pocketBase: pocketBase, // Provide the instance to the store
+    pocketBase: pocketBase,
     setUser: (user) => set({ user }),
 }));
 
